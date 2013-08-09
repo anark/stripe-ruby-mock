@@ -16,7 +16,7 @@ module StripeMock
         cards = []
         if params[:card]
           cards << get_card_by_token(params.delete(:card))
-          params[:default_card] = cards.first[:id]
+          params[:default_card] = (params[:expand] && params[:expand].include?('default_card')) ? cards.first : cards.first[:id]
         end
         customers[ params[:id] ] = Data.mock_customer(cards, params)
       end

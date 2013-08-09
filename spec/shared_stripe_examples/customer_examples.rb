@@ -20,6 +20,16 @@ shared_examples 'Customer API' do
     expect { customer.card }.to raise_error
   end
 
+  it "expands stripe customer default card" do
+    customer = Stripe::Customer.create({
+      email: 'johnny@appleseed.com',
+      card: 'some_card_token',
+      description: "a description",
+      expand: ['default_card']
+    })
+    expect(customer.default_card.id).to eq customer.cards.data.first.id
+  end
+
   it "creates a stripe customer without a card" do
     customer = Stripe::Customer.create({
       email: 'cardless@appleseed.com',
